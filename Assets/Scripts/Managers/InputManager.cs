@@ -14,7 +14,6 @@ namespace TacticalBounce.Components
         private Vector2 curPos;
 
         private bool isInputActive;
-        private bool inputState = false;
 
         private void Awake()
         {
@@ -30,16 +29,6 @@ namespace TacticalBounce.Components
         private void Update()
         {
             if (!isInputActive) return;
-
-            if(!inputState) //TEMP SOLUTION
-            {
-                if(Input.GetMouseButtonUp(0))
-                {
-                    inputState = true;
-                }
-
-                return;
-            }
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -77,12 +66,22 @@ namespace TacticalBounce.Components
             switch (newState)
             {
                 case Managers.GameState.Preparation:
-                    isInputActive = true;
+                    StartCoroutine(WaitForRelease());
                     break;
                 default:
                     isInputActive = false;
                     break;
             }
+        }
+
+        private IEnumerator WaitForRelease()
+        {
+            while(Input.GetMouseButton(0))
+            {
+                yield return null;
+            }
+            yield return null;
+            isInputActive = true;
         }
     }
 }
