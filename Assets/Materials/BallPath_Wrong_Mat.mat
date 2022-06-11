@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BallPath_Wrong_Mat 1
+  m_Name: BallPath_Wrong_Mat
   m_Shader: {fileID: 4800000, guid: eb9c48e8cc1c94c4eb92e0e6d3c182df, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -29,5 +29,5 @@ Material:
     - _SlideSpeed: 3
     - _VerticalTiling: 1
     m_Colors:
-    - _PathColor: {r: 0.42438588, g: 0.42565623, b: 0.8584906, a: 1}
+    - _PathColor: {r: 0.9339623, g: 0.09759763, b: 0.05639012, a: 1}
   m_BuildTextureStacks: []

@@ -59,9 +59,7 @@ namespace TacticalBounce.Managers
         private void StartGame()
         {
             OnGameStateChange?.Invoke(GameState.Preparation);
-        }
-
-        
+        }        
 
         private IEnumerator AfterLoad()
         {
