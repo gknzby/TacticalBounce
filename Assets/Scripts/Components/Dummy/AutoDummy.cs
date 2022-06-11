@@ -7,18 +7,27 @@ namespace TacticalBounce.Components
 
     public class AutoDummy : Dummy
     {
-        [SerializeField] private Transform Target_T;
-
+        [SerializeField] private Vector3 TargetPosition;
 
         public override bool CalculatePath(Ray inRay, RaycastHit inHit, out Ray outRay, out RaycastHit outHit)
         {            
-            Vector3 outDir = (Target_T.position - inHit.point).normalized;
+            Vector3 outDir = (TargetPosition - inHit.point).normalized;
             outDir.y = 0;
             outRay = new Ray(inHit.point, outDir);
             
 
             return Physics.Raycast(outRay, out outHit);
         }
+
+        public Vector3 GetTargetPosition()
+        {
+            return TargetPosition;
+        }
+        public void SetTargetPosition(Vector3 TargetPosition)
+        {
+            this.TargetPosition = TargetPosition;
+        }
+
 
 #if UNITY_EDITOR
         private void Awake()
@@ -30,10 +39,11 @@ namespace TacticalBounce.Components
         [SerializeField] private bool hideGizmos = false;
         private void OnDrawGizmos()
         {
-            if (hideGizmos || Target_T == null) return;
+            if (hideGizmos) 
+                return;
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(this.transform.position, Target_T.position);
+            Gizmos.DrawLine(this.transform.position, TargetPosition);
         }
 
         private void OnApplicationQuit()

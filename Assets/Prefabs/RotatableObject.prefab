@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3510781347906135869}
   - component: {fileID: 3510781347906135868}
+  - component: {fileID: 5081776017021260242}
   m_Layer: 0
   m_Name: RotatableObject
   m_TagString: Untagged
@@ -143,6 +144,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdfaa952b2e825b4e96f1cddfdfdeae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5081776017021260242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3510781347906135866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfdaac4081d23a488d7df8c5cac0d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataObject:
+    ObjectTransform: {fileID: 3510781347906135869}
+    ObjectPrefab: {fileID: 3510781347906135866}
+    DummyTransform: {fileID: 3198705828706287676}
 --- !u!1001 &3510781346546046802
 PrefabInstance:
   m_ObjectHideFlags: 0

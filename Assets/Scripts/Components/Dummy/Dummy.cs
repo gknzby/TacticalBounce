@@ -17,12 +17,12 @@ namespace TacticalBounce.Components
         private Vector3 targetPos;
 
         [Min(1f)]
-        [SerializeField] protected float ReachDistance = 0;
-
-        [Min(1f)]
-        [SerializeField] protected float OutReachFall = 1;
+        [SerializeField] protected float ReachDistance = 10;
 
         [SerializeField] private GameObject BallPath_Obj;
+
+
+        protected float OutReachFall = 5f;
 
         public abstract bool CalculatePath(Ray inRay, RaycastHit inHit, out Ray outRay, out RaycastHit outHit);
 
@@ -57,6 +57,16 @@ namespace TacticalBounce.Components
         public virtual Vector3 GetTarget()
         {
             return targetPos;
+        }
+
+        public virtual float GetReachDistance()
+        {
+            return ReachDistance;
+        }
+
+        public virtual void SetReachDistance(float distance)
+        {
+            ReachDistance = distance;
         }
     }
 }
