@@ -1,42 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TacticalBounce.Managers;
 
 
 namespace TacticalBounce.Components
 {
     public class BallMovement : MonoBehaviour
     {
+        #region Inspector Variables
+        [Min(0.5f)]
+        [SerializeField] private float BallReachTime = 1f;
+        #endregion
+
+        #region Class Variables
         private Rigidbody rb;
-        private Vector3 targetPos;
-        private bool followTarget = false;
+        private Coroutine activeCoroutine;
+        #endregion
 
-        private float lastTouchTime;
-        private float timeOutLimit = 2f;
-
-        private void Awake()
+        #region Class Functions
+        private void HandleGameStateChange(GameState gameState)
         {
-            rb = GetComponent<Rigidbody>();
+            switch (gameState)
+            {
+                case GameState.Menu:
+                    break;
+                case GameState.Preparation:
+                    break;
+                case GameState.Shotted:
+                    InitialShot();
+                    break;
+                case GameState.Goal:
+                    break;
+                case GameState.Loose:
+                    break;
+                default:
+                    break;
+            }
         }
-
-        private void Start()
-        {
-            Managers.GameManager.Instance.OnGameStateChange += this.HandleGameStateChange;
-        }
-
-        //private void FixedUpdate()
-        //{
-        //    if (!followTarget) return;
-
-        //    if(timeOutLimit < Time.time - lastTouchTime)
-        //    {
-        //        Debug.Log("Lost");
-        //        followTarget = false;
-        //        return;
-        //    }
-
-
-        //}
 
         private void InitialShot()
         {
@@ -44,7 +45,6 @@ namespace TacticalBounce.Components
         }
 
 
-        private Coroutine activeCoroutine;
         private void OnTriggerEnter(Collider other)
         {
             if(other.transform.CompareTag("Dummy"))
@@ -85,8 +85,6 @@ namespace TacticalBounce.Components
             Debug.Log("Lost");
         }
 
-        [Min(0.5f)]
-        [SerializeField] private float BallReachTime = 1f;
         private IEnumerator FollowBall(Vector3 target)
         {
             yield return new WaitForFixedUpdate();
@@ -94,7 +92,7 @@ namespace TacticalBounce.Components
             Vector3 firstPos = this.transform.position;
             float timer = 0;
 
-            while (0.51f < Vector3.Distance(target, this.transform.position))
+            while (timer < BallReachTime)
             {
                 yield return new WaitForFixedUpdate();
                 timer += Time.fixedDeltaTime;
@@ -105,20 +103,21 @@ namespace TacticalBounce.Components
             yield return new WaitForSeconds(0.1f);
             GameLost();
         }
+        #endregion
 
-        private void HandleGameStateChange(Managers.GameState newState)
+        #region Unity Functions
+        private void Awake()
         {
-            switch (newState)
-            {
-                case Managers.GameState.Shotted:
-                    InitialShot();
-                    break;
-                default:
-                    break;
-            }
+            rb = GetComponent<Rigidbody>();
+
         }
 
-        
+        private void Start()
+        {
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.OnGameStateChange += HandleGameStateChange;
+        }
+        #endregion
     }
 }
 

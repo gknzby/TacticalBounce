@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TacticalBounce.Managers;
 
 namespace TacticalBounce.Components
 {
     [RequireComponent(typeof(Dummy))]
     public class ShotPather : MonoBehaviour, IInputReceiver
     {
+
+        private Dictionary<Transform, int> hittedDummies = new Dictionary<Transform, int>();
+
         #region InputReceiver
         public void Click()
         {
@@ -22,12 +26,20 @@ namespace TacticalBounce.Components
         public void Release()
         {
             ClearPath();
-            Managers.GameManager.Instance.Shotted();
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            if (igm != null)
+            {
+                igm.SendGameAction(GameAction.Shot);
+            }
+        }
+
+        public void Cancel()
+        {
+            ClearPath();
         }
         #endregion
 
-        private Dictionary<Transform, int> hittedDummies = new Dictionary<Transform, int>();
-
+        #region Class Functions
         private void ClearPath()
         {
             foreach(KeyValuePair<Transform, int> hitDummy in hittedDummies)
@@ -105,6 +117,7 @@ namespace TacticalBounce.Components
                 break;
             }
         }
+        #endregion
     }
 }
 

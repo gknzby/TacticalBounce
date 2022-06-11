@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: e0669c22e1fe3804aadbda0c5bb3ba29
+guid: 23d4cc3d1727cdf4fa0ad0aba2d21ac9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - BallPath_Obj: {fileID: 3356132759202609219, guid: daf129d22cdf3db49adf51164a07cdcc, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

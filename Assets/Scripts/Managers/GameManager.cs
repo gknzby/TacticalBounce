@@ -15,18 +15,65 @@ namespace TacticalBounce.Managers
         Loose
     }
 
-    public class GameManager : Helpers.SingletonMono<GameManager>
+    public class GameManager : MonoBehaviour, IGameManager
     {
+        #region IGameManager
+        public string ManagerType { get; set; }
         public event Action<GameState> OnGameStateChange;
-
-        public void StartGame()
+        public void SendGameAction(GameAction gameAction)
         {
-            OnGameStateChange?.Invoke(GameState.Preparation);
+            switch (gameAction)
+            {
+                case GameAction.MainMenu:
+                    break;
+                case GameAction.StartGame:
+                    StartGame();
+                    break;
+                case GameAction.Stop:
+                    break;
+                case GameAction.Shot:
+                    Shot();
+                    break;
+                case GameAction.Lost:
+                    break;
+                case GameAction.Win:
+                    break;
+                case GameAction.Retry:
+                    break;
+                case GameAction.Restart:
+                    break;
+                case GameAction.Next:
+                    break;
+                default:
+                    break;
+            }
         }
+        #endregion
 
-        public void Shotted()
+        #region Class Functions
+        private void Shot()
         {
             OnGameStateChange?.Invoke(GameState.Shotted);
         }
+
+        private void StartGame()
+        {
+            OnGameStateChange?.Invoke(GameState.Preparation);
+        }
+        #endregion
+
+        #region Unity Functions
+        private void Awake()
+        {
+            ManagerType = "GameManager";
+            ManagerProvider.AddManager(this);
+        }
+        private void OnDestroy()
+        {
+            ManagerProvider.RemoveManager(this);
+        }
+        #endregion
+
+
     }
 }
