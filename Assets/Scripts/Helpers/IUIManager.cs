@@ -8,6 +8,8 @@ namespace TacticalBounce.Managers
     {
         void SendUIComponent(Components.UIComponent uiComponent);
         void SendUIAction(Components.UIAction uiAction);
-}
+        void RegisterMenu(IUIMenu uiMenu);
+        void ShowMenu(string menuName);
+    }
 }
 

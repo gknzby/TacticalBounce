@@ -7,7 +7,8 @@ namespace TacticalBounce.Components
 {
     public enum UIAction
     {
-        StartGame
+        StartGame,
+        ShowMainMenu
     }
     public class UIComponent : MonoBehaviour
     {

@@ -60,6 +60,15 @@ namespace TacticalBounce.Managers
         {
             OnGameStateChange?.Invoke(GameState.Preparation);
         }
+
+        
+
+        private IEnumerator AfterLoad()
+        {
+            yield return null; //Waiting first update functions
+            IUIManager uiMng = ManagerProvider.GetManager("UIManager") as IUIManager;
+            uiMng.ShowMenu("MainMenu");
+        }
         #endregion
 
         #region Unity Functions
@@ -68,6 +77,12 @@ namespace TacticalBounce.Managers
             ManagerType = "GameManager";
             ManagerProvider.AddManager(this);
         }
+
+        private void Start()
+        {
+            StartCoroutine(AfterLoad());    
+        }
+
         private void OnDestroy()
         {
             ManagerProvider.RemoveManager(this);
