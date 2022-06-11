@@ -15,6 +15,28 @@ namespace TacticalBounce.Components
 
             return Physics.Raycast(outRay, out outHit, ReachDistance);
         }
+
+#if UNITY_EDITOR
+        private void Awake()
+        {
+            hideGizmos = true;
+        }
+
+        [Header("Gizmos")]
+        [SerializeField] private bool hideGizmos = false;
+        private void OnDrawGizmos()
+        {
+            if (hideGizmos) return;
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(this.transform.position, base.ReachDistance);
+        }
+
+        private void OnApplicationQuit()
+        {
+            hideGizmos = false;
+        }
+#endif
     }
 }
 

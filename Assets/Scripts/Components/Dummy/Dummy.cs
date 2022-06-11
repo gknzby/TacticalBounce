@@ -31,7 +31,7 @@ namespace TacticalBounce.Components
             if(inReach)
             {
                 this.targetPos = targetHit;
-                DrawPath(inHit, this.targetPos);
+                DrawPath(inHit, this.targetPos, inReach);
             }
             else
             {
@@ -39,15 +39,15 @@ namespace TacticalBounce.Components
                 outReachDir.y = 0;
                 outReachDir = outReachDir.normalized;
                 this.targetPos = inHit + outReachDir * this.OutReachFall;
-                DrawPath(inHit, inHit + (outReachDir * this.ReachDistance));
+                DrawPath(inHit, inHit + (outReachDir * this.ReachDistance), inReach);
             }
             
         }
 
-        protected virtual void DrawPath(Vector3 startPoint, Vector3 endPoint)
+        protected virtual void DrawPath(Vector3 startPoint, Vector3 endPoint, bool inReach)
         {
             BallPath_Obj.SetActive(true);
-            BallPath_Obj.GetComponent<BallPath>().DrawPath(startPoint, endPoint);
+            BallPath_Obj.GetComponent<BallPath>().DrawPath(startPoint, endPoint, inReach);
         }
         public virtual void ClearPath()
         {

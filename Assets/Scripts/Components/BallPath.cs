@@ -7,6 +7,9 @@ namespace TacticalBounce.Components
 {
     public class BallPath : MonoBehaviour
     {
+        [SerializeField] private Material CorrectBallPath;
+        [SerializeField] private Material WrongBallPath;
+
         private bool firstCall = true;
         private Vector3 defaultScale;
 
@@ -18,7 +21,7 @@ namespace TacticalBounce.Components
             defaultScale.z /= transform.lossyScale.z;
         }
 
-        public void DrawPath(Vector3 startPoint, Vector3 endPoint)
+        public void DrawPath(Vector3 startPoint, Vector3 endPoint, bool isCorrectPath)
         {
             startPoint.y = 0.1f;
             endPoint.y = 0.1f;
@@ -40,6 +43,8 @@ namespace TacticalBounce.Components
             Vector3 pathScale = defaultScale;
             pathScale.y *= pointDistance;
             this.transform.localScale = pathScale;
+
+            this.GetComponent<MeshRenderer>().material = isCorrectPath ? CorrectBallPath : WrongBallPath;
         }
     }
 }

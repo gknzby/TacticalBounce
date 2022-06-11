@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0669c22e1fe3804aadbda0c5bb3ba29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReachDistance: 30
+  ReachDistance: 12
   OutReachFall: 5
   BallPath_Obj: {fileID: 3625322928296866017}
 --- !u!1001 &2079777956861053090
