@@ -118,6 +118,18 @@ namespace TacticalBounce.Components
             }
         }
         #endregion
+
+        private void OnEnable()
+        {
+            StartCoroutine(AddDefaultNextFrame());            
+        }
+
+        private IEnumerator AddDefaultNextFrame()
+        {
+            yield return null;
+            IInputManager iim = ManagerProvider.GetManager("InputManager") as IInputManager;
+            iim.SetDefaultReceiver(this);
+        }
     }
 }
 

@@ -18,44 +18,28 @@ namespace TacticalBounce.Data
             reachDistance = this.DummyTransform.GetComponent<Dummy>().GetReachDistance();
         }
 
-        public override GameObject CreateObject()
+        public override void CreateObject(Transform newObject)
         {
-            GameObject createdObj =  base.CreateObject();
+            base.CreateObject(newObject);
 
-            Dummy dummy = FindDummy(createdObj.transform);
-            dummy.SetReachDistance(reachDistance);
-
-            return createdObj;
+            DummyTransform.GetComponent<Dummy>().SetReachDistance(reachDistance);
         }
 
-
-        private Dummy FindDummy(Transform tf)
+        public override List<string> GetObjectData()
         {
-            if(tf.GetComponent<Dummy>() != null)
-            {
-                return tf.GetComponent<Dummy>();
-            }
+            List<string> dataString = base.GetObjectData();
+            dataString.Add(reachDistance.ToString());
 
-            Queue<Transform> searchQueue = new Queue<Transform>();
-            searchQueue.Enqueue(tf);
+            return dataString;
+        }
 
-            while(searchQueue.Count == 0)
-            {
-                Transform searching = searchQueue.Dequeue();
-                for(int i = 0; i < searching.childCount; i++)
-                {
-                    if(searching.GetChild(i).GetComponent<Dummy>() != null)
-                    {
-                        return searching.GetChild(i).GetComponent<Dummy>();
-                    }
-                    else if(0 < searching.GetChild(i).childCount)
-                    {
-                        searchQueue.Enqueue(searching.GetChild(i));
-                    }
-                }
-            }
+        public override void SetObjectData(List<string> dataString)
+        {
+            int lastIndex = dataString.Count - 1;
+            reachDistance = float.Parse(dataString[lastIndex], System.Globalization.CultureInfo.InvariantCulture);
+            dataString.RemoveAt(lastIndex);
 
-            return null;
+            base.SetObjectData(dataString);
         }
     }
 }

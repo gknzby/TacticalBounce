@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TacticalBounce.Components;
@@ -18,7 +19,13 @@ namespace TacticalBounce.Managers
             switch (uiAction)
             {
                 case UIAction.StartGame:
-                    StartGame();
+                    LoadLevel();    
+                    break;
+                case UIAction.RetryLevel:
+                    LoadLevel();
+                    break;
+                case UIAction.Restart:
+                    RestartGame();
                     break;
                 default:
                     break;
@@ -27,9 +34,20 @@ namespace TacticalBounce.Managers
 
         public void SendUIComponent(UIComponent uiComponent)
         {
-            //Extensionable
-            //UI Component could has more variable in it
-            this.SendUIAction(uiComponent.uiAction);
+            switch (uiComponent.uiAction)
+            {
+                case UIAction.LoadLevel:
+                    int level = int.Parse(uiComponent.value);
+                    LoadLevel(level);
+                    HideMenu("LevelsMenu");
+                    break;
+                case UIAction.ShowMenu:
+                    ShowMenu(uiComponent.value);
+                    break;
+                default:
+                    SendUIAction(uiComponent.uiAction);
+                    break;
+            }
         }
 
         public void RegisterMenu(IUIMenu uiMenu)
@@ -40,7 +58,6 @@ namespace TacticalBounce.Managers
             }
             uiMenu.HideMenu();
         }
-
         public void ShowMenu(string menuName)
         {
             foreach(IUIMenu uiMenu in uiMenus)
@@ -54,33 +71,43 @@ namespace TacticalBounce.Managers
 
             Debug.LogWarning("UIManager couldn't find " + menuName);
         }
+        public void HideMenu(string menuName)
+        {
+            foreach (IUIMenu uiMenu in uiMenus)
+            {
+                if (uiMenu.GetMenuName() == menuName)
+                {
+                    uiMenu.HideMenu();
+                    return;
+                }
+            }
+
+            Debug.LogWarning("UIManager couldn't find " + menuName);
+        }
         #endregion
 
         #region Class Functions
-        private void StartGame()
+        private void RestartGame()
         {
             IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
-            igm.SendGameAction(GameAction.StartGame);
+            igm.SendGameAction(GameAction.Restart);
         }
+        private void LoadLevel()
+        {
+            if(!PlayerPrefs.HasKey("Level"))
+            {
+                PlayerPrefs.SetInt("Level", 0);
+            }
 
-        //private void HandleGameStateChange(Managers.GameState newState)
-        //{
-        //    switch (newState)
-        //    {
-        //        case GameState.Menu:
-        //            break;
-        //        case GameState.Preparation:
-        //            break;
-        //        case GameState.Shotted:
-        //            break;
-        //        case GameState.Goal:
-        //            break;
-        //        case GameState.Loose:
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.SendGameAction(GameAction.LoadLevel);
+        }
+        private void LoadLevel(int index)
+        {
+            PlayerPrefs.SetInt("Level", index);
+
+            LoadLevel();
+        }
         #endregion
 
         #region Unity Functions
@@ -89,11 +116,6 @@ namespace TacticalBounce.Managers
             ManagerType = "UIManager";
             uiMenus = new List<IUIMenu>();
             ManagerProvider.AddManager(this);
-        }
-
-        private void Start()
-        {
-            
         }
 
         private void OnDestroy()

@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TacticalBounce.Managers;
+using TacticalBounce.Components;
 
-namespace TacticalBounce.Components
+namespace TacticalBounce.Managers
 {
-    public class InputManager : MonoBehaviour
+    public class InputManager : MonoBehaviour, IInputManager
     {
-        #region Inspector Variables
-        [SerializeField] private GameObject DefRec_Obj; //TEMP
+        #region IInputManager
+        public string ManagerType { get; set; }
 
+        public void SetDefaultReceiver(IInputReceiver inputReceiver)
+        {
+            defaultReceiver = inputReceiver;
+        }
+        #endregion
+
+        #region Inspector Variables
         [Min(1f)]
-        [SerializeField] private float MouseSensivitiy = 50f; //TEMP 2
+        [SerializeField] private float MouseSensivitiy = 50f;
 
         [Range(0f, 1f)]
         [SerializeField] private float ScreenDeadZone = 0.2f;
@@ -36,6 +44,7 @@ namespace TacticalBounce.Components
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
+            Debug.Assert(defaultReceiver != null, "There is no default receiver in the scene");
             newReceiver = defaultReceiver;
 
             if (Physics.Raycast(ray, out hit))
@@ -114,6 +123,7 @@ namespace TacticalBounce.Components
         }
 
         private Coroutine waitForReleeaseCoroutine;
+
         private IEnumerator WaitForRelease()
         {
             while (Input.GetMouseButton(0))
@@ -129,7 +139,9 @@ namespace TacticalBounce.Components
         private void Awake()
         {
             isInputActive = false;
-            defaultReceiver = DefRec_Obj.GetComponent<IInputReceiver>();
+
+            this.ManagerType = "InputManager";
+            ManagerProvider.AddManager(this);
         }
 
         private void Start()
@@ -157,8 +169,12 @@ namespace TacticalBounce.Components
                 prevPos = curPos;
             }
         }
-        #endregion
 
+        private void OnApplicationQuit()
+        {
+            ManagerProvider.RemoveManager(this);
+        }
+        #endregion
     }
 }
 

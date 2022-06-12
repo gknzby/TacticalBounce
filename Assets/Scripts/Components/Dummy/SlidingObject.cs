@@ -19,7 +19,7 @@ namespace TacticalBounce.Components
         private Vector3 startPoint;
         private Vector3 endPoint;
         private Vector2 slideDirection;
-        private float slidePosition;
+        private float slidePosition = -1;
         #endregion
 
         #region IInputReceiver
@@ -30,6 +30,7 @@ namespace TacticalBounce.Components
 
         public void Click()
         {
+            SetDefaults();
             return;
         }
 
@@ -64,7 +65,7 @@ namespace TacticalBounce.Components
 
             Vector3 tempSlideDir = (endPoint - startPoint).normalized;
             slideDirection = new Vector2(tempSlideDir.x, tempSlideDir.z);
-            slidePosition = 0;
+            slidePosition = slidePosition < 0 ? 0 : slidePosition;
 
             this.transform.position = startPoint;
         }

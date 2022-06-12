@@ -8,23 +8,42 @@ namespace TacticalBounce.Data
     [System.Serializable]
     public class AutoDummyData : ObjectData
     {
+        #region Inspector&Class Variables
         [SerializeField] private Transform DummyTransform;
-        private Vector3 TargetPosition;
+        private Vector3 targetPosition;
+        #endregion
 
+        #region ObjectData
         public override void CollectData()
         {
             base.CollectData();
 
-            TargetPosition = this.DummyTransform.GetComponent<AutoDummy>().GetTargetPosition();
+            targetPosition = this.DummyTransform.GetComponent<AutoDummy>().GetTargetPosition();
         }
 
-        public override GameObject CreateObject()
+        public override void CreateObject(Transform newObject)
         {
-            GameObject createdObj = base.CreateObject();
+            base.CreateObject( newObject );
 
-            createdObj.GetComponent<AutoDummy>().SetTargetPosition(TargetPosition);
-
-            return createdObj;
+            DummyTransform.GetComponent<AutoDummy>().SetTargetPosition(targetPosition);
         }
+
+        public override List<string> GetObjectData()
+        {
+            List<string> dataString = base.GetObjectData();
+            dataString.Add(targetPosition.ToString());
+
+            return dataString;
+        }
+
+        public override void SetObjectData(List<string> dataString)
+        {
+            int lastIndex = dataString.Count - 1;
+            targetPosition = base.StringToVector3(dataString[lastIndex]);
+            dataString.RemoveAt(lastIndex);
+
+            base.SetObjectData(dataString);
+        }
+        #endregion
     }
 }

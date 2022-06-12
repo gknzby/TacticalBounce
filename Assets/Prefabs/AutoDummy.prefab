@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf96851100cfea4186b4ff88673a15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataObject:
+  autoDummyData:
     ObjectTransform: {fileID: 4751079652653277447}
-    ObjectPrefab: {fileID: 4751079652653277691}
+    poolObjectType: 3
     DummyTransform: {fileID: 4751079652653277447}
 --- !u!1001 &4751079652523102969
 PrefabInstance:

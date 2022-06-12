@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace TacticalBounce.Managers
 {
-
     /*
      * I made a fake object pooling, because this gives me
      * to be able to add Object Pool more easily in the future
@@ -18,11 +17,12 @@ namespace TacticalBounce.Managers
 
         public GameObject GetPoolObject(GameObject poolObjPrefab)
         {
-            return Instantiate(poolObjPrefab);
+            return Instantiate(poolObjPrefab, this.transform);
         }
 
         public void ReturnPoolObject(GameObject poolObj)
         {
+            Debug.Log("Called Object Pool");
             Destroy(poolObj);
         }
         #endregion

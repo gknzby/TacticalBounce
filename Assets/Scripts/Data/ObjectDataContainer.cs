@@ -1,14 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using TacticalBounce.Managers;
 using UnityEngine;
 
 
 namespace TacticalBounce.Data
 {
-    public class ObjectDataContainer : MonoBehaviour, IObjectDataContainer
+    public abstract class ObjectDataContainer : MonoBehaviour, IObjectDataContainer
     {
-        public IObjectData DataObject { get { return dataObject; } set { dataObject = value as ObjectData; } }
+        #region IObjectDataContainer
+        public virtual IObjectData DataObject { get; set; }
 
-        [SerializeField] private ObjectData dataObject;
+        public virtual void CreateObject()
+        {
+            DataObject.CreateObject(this.transform);
+        }
+
+        public virtual void CollectData()
+        {
+            DataObject.CollectData();
+        }
+
+        public virtual List<string> GetObjectData()
+        {
+            return DataObject.GetObjectData();
+        }
+
+        public virtual void SetObjectData(List<string> dataString)
+        {
+            DataObject.SetObjectData(dataString);
+        }
+        #endregion
     }
 }

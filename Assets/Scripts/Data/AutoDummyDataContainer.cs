@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace TacticalBounce.Data
 {
-    public class AutoDummyDataContainer : MonoBehaviour, IObjectDataContainer
+    public class AutoDummyDataContainer : ObjectDataContainer
     {
-        public IObjectData DataObject { get { return dataObject; } set { dataObject = value as AutoDummyData; } }
+        public override IObjectData DataObject { get { return autoDummyData; } set { autoDummyData = value as AutoDummyData; } }
 
-        [SerializeField] private AutoDummyData dataObject;
+        [SerializeField] private AutoDummyData autoDummyData = new AutoDummyData();
     }
 }

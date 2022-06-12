@@ -10,23 +10,23 @@ namespace TacticalBounce.Components
     {
 
         #region IUIMenu
-        public void ShowMenu()
+        public virtual void ShowMenu()
         {
             this.MenuObj.SetActive(true);
         }
-        public void HideMenu()
+        public virtual void HideMenu()
         {
             this.MenuObj.SetActive(false);
         }
 
-        public string GetMenuName()
+        public virtual string GetMenuName()
         {
             return this.MenuName;
         }
         #endregion
 
-        [SerializeField] private GameObject MenuObj;
-        [SerializeField] private string MenuName;
+        [SerializeField] protected GameObject MenuObj;
+        [SerializeField] protected string MenuName;
 
         private void Start()
         {

@@ -5,12 +5,10 @@ using UnityEngine;
 public enum GameAction
 {
     MainMenu,
-    StartGame,
     Stop,
     Shot,
     Lost,
     Win,
-    Retry,
     Restart,
-    Next
+    LoadLevel
 }

@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 3510781347906135868}
   - component: {fileID: 5081776017021260242}
   m_Layer: 0
-  m_Name: RotatableObject
+  m_Name: RotatableDummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,9 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bfdaac4081d23a488d7df8c5cac0d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataObject:
+  dummyData:
     ObjectTransform: {fileID: 3510781347906135869}
-    ObjectPrefab: {fileID: 3510781347906135866}
+    poolObjectType: 4
     DummyTransform: {fileID: 3198705828706287676}
 --- !u!1001 &3510781346546046802
 PrefabInstance:

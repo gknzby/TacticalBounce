@@ -7,11 +7,10 @@ namespace TacticalBounce.Data
     public interface IObjectData
     {
         void CollectData();
-        GameObject CreateObject();
+        void CreateObject(Transform newObject);
         List<string> GetObjectData();
+        GameObject GetPrefab();
         void SetObjectData(List<string> objectData);
-        int GetID();
-        void Preps();
     }
 }
 
