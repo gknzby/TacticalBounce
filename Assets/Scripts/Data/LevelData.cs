@@ -91,7 +91,7 @@ namespace TacticalBounce.Data
                 }
                 IObjectDataContainer iodc = newObj.GetComponent<IObjectDataContainer>();
 
-                iodc.SetObjectData(level.dataStringList);
+                iodc.SetObjectData(new List<string>(level.dataStringList));
                 iodc.CreateObject();
 
                 createdObjects.Add(newObj);

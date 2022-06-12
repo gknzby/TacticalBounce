@@ -7,7 +7,6 @@ namespace TacticalBounce.Managers
 {
     public interface IGameManager : IManager
     {
-        event Action<GameState> OnGameStateChange;
         void SendGameAction(GameAction gameAction);
     }
 }

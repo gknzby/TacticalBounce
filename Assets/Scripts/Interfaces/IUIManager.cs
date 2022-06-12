@@ -10,6 +10,7 @@ namespace TacticalBounce.Managers
         void SendUIAction(Components.UIAction uiAction);
         void RegisterMenu(IUIMenu uiMenu);
         void ShowMenu(string menuName);
+        void HideMenu(string menuName);
     }
 }
 

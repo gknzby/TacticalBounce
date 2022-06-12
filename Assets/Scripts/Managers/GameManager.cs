@@ -19,31 +19,72 @@ namespace TacticalBounce.Managers
     {
         #region IGameManager
         public string ManagerType { get; set; }
-        public event Action<GameState> OnGameStateChange;
         public void SendGameAction(GameAction gameAction)
         {
             switch (gameAction)
             {
-                case GameAction.MainMenu:
-                    break;
-                case GameAction.Stop:
+                case GameAction.PauseGame:
+                    StopGame();
                     break;
                 case GameAction.Shot:
                     Shot();
                     break;
                 case GameAction.Lost:
+                    GameLost();
                     break;
                 case GameAction.Win:
+                    GameWin();
                     break;
                 case GameAction.Restart:
                     RestartGame();
                     break;
                 case GameAction.LoadLevel:
-                    this.LoadLevel();
+                    LoadLevel();
+                    break;
+                case GameAction.EndGame:
+                    EndGame();
+                    break;
+                case GameAction.ResumeGame:
+                    ResumeGame();
                     break;
                 default:
                     break;
             }
+        }
+
+        IUIManager uiManager;
+        IInputManager inputManager;
+
+        private void EndGame()
+        {
+            StopGame();
+            uiManager.ShowMenu("EndGameMenu");
+        }
+
+        private void GameWin()
+        {
+            StopGame();
+            uiManager.ShowMenu("WinMenu");
+        }
+
+        private void GameLost()
+        {
+            StopGame();
+            uiManager.ShowMenu("LostMenu");
+        }
+
+        private void ResumeGame()
+        {
+            Time.timeScale = 1f;
+            uiManager.ShowMenu("HUD");
+            inputManager.StartSendingInputs();
+        }
+
+        private void StopGame()
+        {
+            Time.timeScale = 0f;
+            uiManager.HideMenu("HUD");
+            inputManager.StopSendingInputs();
         }
 
         private void RestartGame()
@@ -55,17 +96,24 @@ namespace TacticalBounce.Managers
         #region Class Functions
         private void Shot()
         {
-            OnGameStateChange?.Invoke(GameState.Shotted);
+            inputManager.StopSendingInputs();
         }
         
         private void LoadLevel()
         {
-            OnGameStateChange?.Invoke(GameState.Preparation);
+            PlayerPrefs.Save();
 
             int level = PlayerPrefs.GetInt("Level");
 
             ILevelManager ilm = ManagerProvider.GetManager("LevelManager") as ILevelManager;
-            ilm.LoadLevel(level);
+            if(ilm.LoadLevel(level))
+            {
+                ResumeGame();
+            }
+            else
+            {
+                SendGameAction(GameAction.EndGame);
+            }
         }
         #endregion
 
@@ -78,14 +126,16 @@ namespace TacticalBounce.Managers
 
         private void Start()
         {
-            //Works after all awake and start functions
+            uiManager = ManagerProvider.GetManager("UIManager") as IUIManager;
+            inputManager = ManagerProvider.GetManager("InputManager") as IInputManager;
+
+            //Works after all awake functions and start functions
             StartCoroutine(AfterLoad());    
         }
         private IEnumerator AfterLoad()
         {
             yield return null; //Waiting first update functions
-            IUIManager uiMng = ManagerProvider.GetManager("UIManager") as IUIManager;
-            uiMng.ShowMenu("MainMenu");
+            uiManager.ShowMenu("MainMenu");
         }
 
 

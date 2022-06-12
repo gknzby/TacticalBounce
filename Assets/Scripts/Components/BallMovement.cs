@@ -19,34 +19,14 @@ namespace TacticalBounce.Components
         #endregion
 
         #region Class Functions
-        private void HandleGameStateChange(GameState gameState)
-        {
-            switch (gameState)
-            {
-                case GameState.Menu:
-                    break;
-                case GameState.Preparation:
-                    break;
-                case GameState.Shotted:
-                    InitialShot();
-                    break;
-                case GameState.Goal:
-                    break;
-                case GameState.Loose:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void InitialShot()
-        {
-            rb.velocity = this.transform.forward * 5f;
-        }
-
 
         private void OnTriggerEnter(Collider other)
         {
+            if(rb.constraints == RigidbodyConstraints.FreezeAll)
+            {
+                rb.constraints = RigidbodyConstraints.None;
+            }
+
             if(other.transform.CompareTag("Dummy"))
             {
                 if(activeCoroutine != null)
@@ -74,7 +54,8 @@ namespace TacticalBounce.Components
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
-            Debug.Log("Goal");
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.SendGameAction(GameAction.Win);
         }
 
         private void GameLost()
@@ -82,7 +63,8 @@ namespace TacticalBounce.Components
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
-            Debug.Log("Lost");
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.SendGameAction(GameAction.Lost);
         }
 
         private IEnumerator FollowBall(Vector3 target)
@@ -91,12 +73,14 @@ namespace TacticalBounce.Components
 
             Vector3 firstPos = this.transform.position;
             float timer = 0;
+            Vector3 angulatVel = new Vector3((target.z - firstPos.z), 0, (target.x - firstPos.x)) * 20f;
 
             while (timer < BallReachTime)
             {
                 yield return new WaitForFixedUpdate();
                 timer += Time.fixedDeltaTime;
 
+                rb.angularVelocity = angulatVel;
                 rb.MovePosition(Vector3.Lerp(firstPos, target, timer/BallReachTime));
             }
 
@@ -115,7 +99,8 @@ namespace TacticalBounce.Components
         private void Start()
         {
             IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
-            igm.OnGameStateChange += HandleGameStateChange;
+
+            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
         #endregion
     }

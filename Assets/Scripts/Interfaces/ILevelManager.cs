@@ -7,9 +7,7 @@ namespace TacticalBounce.Managers
     public interface ILevelManager : IManager
     {
         int LevelCount { get; }
-        void LoadLevel(int index);
+        bool LoadLevel(int index);
         void SaveLevel();
-        void NextLevel();
-        void RetryLevel();
     }
 }

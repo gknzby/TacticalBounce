@@ -19,13 +19,22 @@ namespace TacticalBounce.Managers
             switch (uiAction)
             {
                 case UIAction.StartGame:
-                    LoadLevel();    
+                    LoadLevel();
                     break;
                 case UIAction.RetryLevel:
                     LoadLevel();
                     break;
-                case UIAction.Restart:
+                case UIAction.NextLevel:
+                    NextLevel();
+                    break;
+                case UIAction.RestartGame:
                     RestartGame();
+                    break;
+                case UIAction.ResumeGame:
+                    ResumeGame();
+                    break;
+                case UIAction.PauseGame:
+                    StopGame();
                     break;
                 default:
                     break;
@@ -87,6 +96,20 @@ namespace TacticalBounce.Managers
         #endregion
 
         #region Class Functions
+        private void ResumeGame()
+        {
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.SendGameAction(GameAction.ResumeGame);
+
+            this.HideMenu("PauseMenu");
+        }
+        private void StopGame()
+        {
+            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
+            igm.SendGameAction(GameAction.PauseGame);
+
+            this.ShowMenu("PauseMenu");
+        }
         private void RestartGame()
         {
             IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
@@ -107,6 +130,16 @@ namespace TacticalBounce.Managers
             PlayerPrefs.SetInt("Level", index);
 
             LoadLevel();
+        }
+        private void NextLevel()
+        {
+            if(!PlayerPrefs.HasKey("Level"))
+            {
+                Debug.LogError("Next level but there is no 'Level' key in PlayerPrefs");
+                PlayerPrefs.SetInt("Level", 0);
+            }
+
+            LoadLevel(PlayerPrefs.GetInt("Level") + 1);
         }
         #endregion
 

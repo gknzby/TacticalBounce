@@ -15,6 +15,16 @@ namespace TacticalBounce.Managers
         {
             defaultReceiver = inputReceiver;
         }
+        public void StopSendingInputs()
+        {
+            isInputActive = false;
+        }
+
+        public void StartSendingInputs()
+        {
+           StopAllCoroutines();
+           StartCoroutine(WaitForRelease());
+        }
         #endregion
 
         #region Inspector Variables
@@ -73,13 +83,18 @@ namespace TacticalBounce.Managers
         {
             newPos = Input.mousePosition;
 
+            if (receiver == null)
+            {
+                StopAllCoroutines();
+                StartCoroutine(WaitForRelease());
+                return;
+            }
+
+
             if (IsDeadZone(newPos))
             {
-                isInputActive = false;
-                if (waitForReleeaseCoroutine != null)
-                    StopCoroutine(waitForReleeaseCoroutine);
-
-                waitForReleeaseCoroutine = StartCoroutine(WaitForRelease());
+                StopAllCoroutines();
+                StartCoroutine(WaitForRelease());
 
                 receiver.Cancel();
                 return;
@@ -107,25 +122,9 @@ namespace TacticalBounce.Managers
             return false;
         }
 
-        private void HandleGameStateChange(Managers.GameState newState)
-        {
-            switch (newState)
-            {
-                case Managers.GameState.Preparation:
-                    isInputActive = false;
-                    if (waitForReleeaseCoroutine == null)
-                        waitForReleeaseCoroutine = StartCoroutine(WaitForRelease());
-                    break;
-                default:
-                    isInputActive = false;
-                    break;
-            }
-        }
-
-        private Coroutine waitForReleeaseCoroutine;
-
         private IEnumerator WaitForRelease()
         {
+            isInputActive = false;
             while (Input.GetMouseButton(0))
             {
                 yield return null;
@@ -142,12 +141,6 @@ namespace TacticalBounce.Managers
 
             this.ManagerType = "InputManager";
             ManagerProvider.AddManager(this);
-        }
-
-        private void Start()
-        {
-            IGameManager igm = ManagerProvider.GetManager("GameManager") as IGameManager;
-            igm.OnGameStateChange += this.HandleGameStateChange;
         }
 
         private void Update()
@@ -174,6 +167,7 @@ namespace TacticalBounce.Managers
         {
             ManagerProvider.RemoveManager(this);
         }
+
         #endregion
     }
 }

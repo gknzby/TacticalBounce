@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TacticalBounce.Data;
 
+using System.IO;
+
 
 namespace TacticalBounce.Managers
 {
@@ -30,11 +32,11 @@ namespace TacticalBounce.Managers
 
         public int LevelCount { get { return LevelList.Count; } }
 
-        public void LoadLevel(int index)
+        public bool LoadLevel(int index)
         {
             //if List null or 'out of index', return
             if (LevelList == null || LevelList.Count - 1 < index)
-                return;
+                return false;
 
             if(currentLevel != null)
             {
@@ -48,16 +50,8 @@ namespace TacticalBounce.Managers
             currentLevel.GenerateLevel();
 
             currentLevelIndex = index;
-        }
 
-        public void NextLevel()
-        {
-            LoadLevel(++currentLevelIndex);
-        }
-
-        public void RetryLevel()
-        {
-            LoadLevel(currentLevelIndex);
+            return true;
         }
 
         [ContextMenu("Add Current Level to List")]
@@ -76,7 +70,7 @@ namespace TacticalBounce.Managers
 
         #region Class Functions
         [ContextMenu("Load Last")]
-        public void LoadLast()
+        private void LoadLast()
         {
             int last = LevelList.Count - 1;
 
@@ -86,7 +80,7 @@ namespace TacticalBounce.Managers
         }
 
         [ContextMenu("Clear Level")]
-        public void ClearLevel()
+        private void ClearLevel()
         {
             currentLevel.ClearLevel();
         }

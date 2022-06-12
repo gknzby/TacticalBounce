@@ -31,6 +31,7 @@ namespace TacticalBounce.Components
             {
                 igm.SendGameAction(GameAction.Shot);
             }
+            this.GetComponent<Collider>().enabled = true;
         }
 
         public void Cancel()
@@ -121,7 +122,7 @@ namespace TacticalBounce.Components
 
         private void OnEnable()
         {
-            StartCoroutine(AddDefaultNextFrame());            
+            StartCoroutine(AddDefaultNextFrame());
         }
 
         private IEnumerator AddDefaultNextFrame()
@@ -129,6 +130,11 @@ namespace TacticalBounce.Components
             yield return null;
             IInputManager iim = ManagerProvider.GetManager("InputManager") as IInputManager;
             iim.SetDefaultReceiver(this);
+        }
+
+        private void Awake()
+        {
+            this.GetComponent<Collider>().enabled = false;
         }
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public enum GameAction
 {
-    MainMenu,
-    Stop,
+    PauseGame,
     Shot,
     Lost,
     Win,
     Restart,
-    LoadLevel
+    LoadLevel,
+    EndGame,
+    ResumeGame
 }
