@@ -7,6 +7,7 @@ namespace TacticalBounce.Components
 {
     public class StartDummy : Dummy
     {
+        //Dummy Override
         public override bool CalculatePath(Ray inRay, RaycastHit inHit, out Ray outRay, out RaycastHit outHit)
         {
             outRay = new Ray(this.transform.position, this.transform.forward);
@@ -14,6 +15,8 @@ namespace TacticalBounce.Components
             return Physics.Raycast(outRay, out outHit, base.ReachDistance); //CalculatePath(outRay, out outHit);
         }
 
+        //Awake, OnDrawGizmos, OnApplicationQuit
+        #region Gizmos
 #if UNITY_EDITOR
         private void Awake()
         {
@@ -35,6 +38,7 @@ namespace TacticalBounce.Components
             hideGizmos = false;
         }
 #endif
+        #endregion 
     }
 
 }

@@ -4,31 +4,23 @@ using UnityEngine;
 using TacticalBounce.Data;
 
 using System.IO;
-
+using System.Collections.ObjectModel;
 
 namespace TacticalBounce.Managers
 {
+    /*
+     * Dependency Notes: LevelData, To strore levels
+     */
     public class LevelManager : MonoBehaviour, ILevelManager
     {
         #region Class Variables
-        [System.Serializable]
-        public struct LevelMini
-        {
-            public List<LevelDataString> levelDiri;
-            public LevelMini(List<LevelDataString> levelo)
-            {
-                levelDiri = levelo;
-            }
-        }
-        [SerializeField] private List<LevelMini> LevelList = new List<LevelMini>();
+        [SerializeField] private List<LevelDataStr> LevelList = new List<LevelDataStr>();
 
         private LevelData currentLevel;
-        private int currentLevelIndex = -1;
         #endregion
 
         #region ILevelManager
-        public string ManagerType { get; set; }
-
+        public string ManagerType { get { return "LevelManager"; } }
 
         public int LevelCount { get { return LevelList.Count; } }
 
@@ -43,13 +35,11 @@ namespace TacticalBounce.Managers
                 currentLevel.ClearLevel();
             }
 
-            List<LevelDataString> levelDataCollection = LevelList[index].levelDiri;
+            LevelDataStr levelDataStr = LevelList[index];
             currentLevel = new LevelData();
-            currentLevel.SetLevelData(levelDataCollection);
+            currentLevel.SetLevelData(levelDataStr);
             currentLevel.SetLevelTransform(this.transform);
             currentLevel.GenerateLevel();
-
-            currentLevelIndex = index;
 
             return true;
         }
@@ -63,12 +53,12 @@ namespace TacticalBounce.Managers
 
             currentLevel = levelData;
 
-            LevelList.Add(new LevelMini(levelData.GetLevelData()));
+            LevelList.Add(new LevelDataStr(levelData.GetLevelData().data));
             return;
         }
         #endregion
 
-        #region Class Functions
+        #region Inspector Functions
         [ContextMenu("Load Last")]
         private void LoadLast()
         {
@@ -86,10 +76,9 @@ namespace TacticalBounce.Managers
         }
         #endregion
 
-        #region Unity Functions
+        #region Unity Functions => Awake, OnDestroy
         private void Awake()
         {
-            ManagerType = "LevelManager";
             ManagerProvider.AddManager(this);
         }
 

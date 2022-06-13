@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPoint_T: {fileID: 9057834735769215329}
   EndPoint_T: {fileID: 4178068466718815861}
-  SlideSensivity: 0.1
+  SlideSensivity: 0.3
 --- !u!1 &6833127943063174757
 GameObject:
   m_ObjectHideFlags: 0

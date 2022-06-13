@@ -5,17 +5,12 @@ using UnityEngine;
 
 namespace TacticalBounce
 {
-    public enum PoolPrefabType
-    {
-        Ball = 0,
-        GoalNet = 1,
-        StartDummy = 2,
-        AutoDummy = 3,
-        RotatableDummy = 4,
-        SlidingDummy = 5
-    }
-
-    
+    /*
+     * This apple is only there to be eaten
+     * This class exists for accessing ObjectPool Prefabs in Edit mode
+     * 
+     * I will replace this later with better method
+     */
     public class PoolPrefabs : MonoBehaviour
     {
         private static PoolPrefabs instance = null;

@@ -12,7 +12,7 @@ namespace TacticalBounce.Managers
         private List<IUIMenu> uiMenus;
 
         #region IUIManager
-        public string ManagerType { get; set; }
+        public string ManagerType { get { return "UIManager"; } }
 
         public void SendUIAction(UIAction uiAction)
         {
@@ -143,10 +143,9 @@ namespace TacticalBounce.Managers
         }
         #endregion
 
-        #region Unity Functions
+        #region Unity Functions => Awake, OnDestroy
         private void Awake()
         {
-            ManagerType = "UIManager";
             uiMenus = new List<IUIMenu>();
             ManagerProvider.AddManager(this);
         }

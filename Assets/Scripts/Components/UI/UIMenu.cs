@@ -32,6 +32,7 @@ namespace TacticalBounce.Components
         {
             RegisterToUIManager();
         }
+
         private void RegisterToUIManager()
         {
             if(MenuName.Length < 1)

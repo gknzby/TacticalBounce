@@ -22,6 +22,7 @@ public class ManagerProvider
         {
             Instance = new ManagerProvider();
         }
+
         return Instance;
     }
 

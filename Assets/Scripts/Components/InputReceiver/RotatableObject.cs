@@ -32,7 +32,7 @@ namespace TacticalBounce.Components
         #region Class Functions
         private void RotateObject()
         {
-            this.transform.Rotate(this.transform.up, 60f);
+            this.transform.Rotate(this.transform.up, 45f);
         }
         #endregion
     }

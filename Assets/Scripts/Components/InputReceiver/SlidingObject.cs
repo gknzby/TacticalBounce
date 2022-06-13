@@ -46,17 +46,6 @@ namespace TacticalBounce.Components
         }
         #endregion
 
-        #region Unity Functions
-        private void Awake()
-        {
-            Debug.Assert(StartPoint_T != null, "Add start point to sliding object");
-            Debug.Assert(EndPoint_T != null, "Add end point to sliding object");
-
-            SetDefaults();
-        }
-
-        #endregion
-
         #region Class Functions
         private void SetDefaults()
         {
@@ -72,13 +61,25 @@ namespace TacticalBounce.Components
 
         private void Slide(Vector2 dragVector)
         {
-            float slideValue = Vector2.Dot(dragVector, slideDirection) * this.SlideSensivity;
+            float slideValue = Vector2.Dot(dragVector, slideDirection) * (this.SlideSensivity / 5f);
 
             slidePosition = Mathf.Clamp01(slidePosition + slideValue);
-            
+
             this.transform.position = Vector3.Lerp(startPoint, endPoint, slidePosition);
         }
 
         #endregion
+
+        #region Unity Functions => Awake
+        private void Awake()
+        {
+            Debug.Assert(StartPoint_T != null, "Add start point to sliding object");
+            Debug.Assert(EndPoint_T != null, "Add end point to sliding object");
+
+            SetDefaults();
+        }
+
+        #endregion
+
     }
 }

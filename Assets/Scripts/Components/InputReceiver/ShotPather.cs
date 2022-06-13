@@ -5,10 +5,12 @@ using TacticalBounce.Managers;
 
 namespace TacticalBounce.Components
 {
+    /*
+     * Dependency notes: Calls InputManager.SetDefault() in OnEnable()
+     */
     [RequireComponent(typeof(Dummy))]
     public class ShotPather : MonoBehaviour, IInputReceiver
     {
-
         private Dictionary<Transform, int> hittedDummies = new Dictionary<Transform, int>();
 
         #region InputReceiver
@@ -120,6 +122,7 @@ namespace TacticalBounce.Components
         }
         #endregion
 
+        #region Unity Functions => Awake, OnEnable
         private void OnEnable()
         {
             StartCoroutine(AddDefaultNextFrame());
@@ -136,6 +139,7 @@ namespace TacticalBounce.Components
         {
             this.GetComponent<Collider>().enabled = false;
         }
+        #endregion
     }
 }
 

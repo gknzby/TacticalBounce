@@ -13,24 +13,27 @@ namespace TacticalBounce.Managers
     public class FakeObjectPool : MonoBehaviour, IObjectPool
     {
         #region IObjectPool
-        public string ManagerType { get; set; }
+        public string ManagerType { get { return "ObjectPool"; } }
 
         public GameObject GetPoolObject(GameObject poolObjPrefab)
         {
             return Instantiate(poolObjPrefab, this.transform);
         }
 
+        public GameObject GetPoolObject(PoolPrefabType poolPrefabType)
+        {
+            return this.GetPoolObject(PoolPrefabs.GetPoolPrefab(poolPrefabType));
+        }
+
         public void ReturnPoolObject(GameObject poolObj)
         {
-            Debug.Log("Called Object Pool");
             Destroy(poolObj);
         }
         #endregion
 
-        #region Unity Functions
+        #region Unity Functions => Awake, OnDestroy
         private void Awake()
         {
-            ManagerType = "ObjectPool";
             ManagerProvider.AddManager(this);
         }
 

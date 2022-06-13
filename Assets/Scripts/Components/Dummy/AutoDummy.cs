@@ -7,8 +7,10 @@ namespace TacticalBounce.Components
 
     public class AutoDummy : Dummy
     {
+        //Inspector Variable
         [SerializeField] private Vector3 TargetPosition;
 
+        //Dummy Override
         public override bool CalculatePath(Ray inRay, RaycastHit inHit, out Ray outRay, out RaycastHit outHit)
         {            
             Vector3 outDir = (TargetPosition - inHit.point).normalized;
@@ -19,6 +21,7 @@ namespace TacticalBounce.Components
             return Physics.Raycast(outRay, out outHit);
         }
 
+        //Class Specific Functions (These for AutoDummyData)
         public Vector3 GetTargetPosition()
         {
             return TargetPosition;
@@ -28,7 +31,8 @@ namespace TacticalBounce.Components
             this.TargetPosition = TargetPosition;
         }
 
-
+        //Awake, OnDrawGizmos, OnApplicationQuit
+        #region Gizmos
 #if UNITY_EDITOR
         private void Awake()
         {
@@ -50,7 +54,7 @@ namespace TacticalBounce.Components
         {
             hideGizmos = false;
         }
-
 #endif
+        #endregion
     }
 }

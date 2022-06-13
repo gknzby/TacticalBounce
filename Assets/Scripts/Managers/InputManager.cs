@@ -9,7 +9,7 @@ namespace TacticalBounce.Managers
     public class InputManager : MonoBehaviour, IInputManager
     {
         #region IInputManager
-        public string ManagerType { get; set; }
+        public string ManagerType { get { return "InputManager"; } }
 
         public void SetDefaultReceiver(IInputReceiver inputReceiver)
         {
@@ -134,12 +134,11 @@ namespace TacticalBounce.Managers
         }
         #endregion
 
-        #region Unity Functions
+        #region Unity Functions => Awake, Update, OnDestroy
         private void Awake()
         {
             isInputActive = false;
 
-            this.ManagerType = "InputManager";
             ManagerProvider.AddManager(this);
         }
 
@@ -163,7 +162,7 @@ namespace TacticalBounce.Managers
             }
         }
 
-        private void OnApplicationQuit()
+        private void OnDestroy()
         {
             ManagerProvider.RemoveManager(this);
         }

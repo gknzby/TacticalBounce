@@ -9,7 +9,6 @@ namespace TacticalBounce.Components
         void Click();
         void Release();
         void Drag(Vector2 dragVec);
-
         void Cancel();
     }
 }

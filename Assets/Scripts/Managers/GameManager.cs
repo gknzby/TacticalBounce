@@ -18,7 +18,7 @@ namespace TacticalBounce.Managers
     public class GameManager : MonoBehaviour, IGameManager
     {
         #region IGameManager
-        public string ManagerType { get; set; }
+        public string ManagerType { get { return "GameManager"; } }
         public void SendGameAction(GameAction gameAction)
         {
             switch (gameAction)
@@ -59,6 +59,7 @@ namespace TacticalBounce.Managers
         {
             StopGame();
             uiManager.ShowMenu("EndGameMenu");
+            PlayerPrefs.SetInt("Level", 0);
         }
 
         private void GameWin()
@@ -89,7 +90,7 @@ namespace TacticalBounce.Managers
 
         private void RestartGame()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            uiManager.ShowMenu("MainMenu");
         }
         #endregion
 
@@ -117,10 +118,9 @@ namespace TacticalBounce.Managers
         }
         #endregion
 
-        #region Unity Functions
+        #region Unity Functions => Awake, Start, OnDestroy
         private void Awake()
         {
-            ManagerType = "GameManager";
             ManagerProvider.AddManager(this);
         }
 
@@ -144,7 +144,6 @@ namespace TacticalBounce.Managers
             ManagerProvider.RemoveManager(this);
         }
         #endregion
-
 
     }
 }

@@ -4,26 +4,24 @@ using UnityEngine;
 
 namespace TacticalBounce.Components
 {
-    public enum DummyType
-    {
-        Auto,
-        Reflect,
-        Start
-    }
-
+    /*
+     * Dependency notes: Uses BallPath class to draw path between its and target
+     */
     [System.Serializable]
     public abstract class Dummy : MonoBehaviour
     {
-        private Vector3 targetPos;
-
+        #region Inspector Variables
         [Min(1f)]
         [SerializeField] protected float ReachDistance = 10;
-
         [SerializeField] private GameObject BallPath_Obj;
+        #endregion
 
-
+        #region Class Variables
+        private Vector3 targetPos;
         protected float OutReachFall = 5f;
+        #endregion
 
+        #region Class Functions
         public abstract bool CalculatePath(Ray inRay, RaycastHit inHit, out Ray outRay, out RaycastHit outHit);
 
         public virtual void SetTarget(Vector3 inHit, Vector3 targetHit, bool inReach)
@@ -44,11 +42,6 @@ namespace TacticalBounce.Components
             
         }
 
-        protected virtual void DrawPath(Vector3 startPoint, Vector3 endPoint, bool inReach)
-        {
-            BallPath_Obj.SetActive(true);
-            BallPath_Obj.GetComponent<BallPath>().DrawPath(startPoint, endPoint, inReach);
-        }
         public virtual void ClearPath()
         {
             BallPath_Obj.SetActive(false);
@@ -68,6 +61,13 @@ namespace TacticalBounce.Components
         {
             ReachDistance = distance;
         }
+
+        protected virtual void DrawPath(Vector3 startPoint, Vector3 endPoint, bool inReach)
+        {
+            BallPath_Obj.SetActive(true);
+            BallPath_Obj.GetComponent<BallPath>().DrawPath(startPoint, endPoint, inReach);
+        }
+        #endregion
     }
 }
 

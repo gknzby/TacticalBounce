@@ -6,6 +6,9 @@ using TacticalBounce.Managers;
 
 namespace TacticalBounce.Components
 {
+    /*
+     * Dependency notes: Calls ILevelManager to get Level Count
+     */
     public class UILevelsMenu : UIMenu
     {
         [SerializeField] private GameObject LevelBtnPrefab;
@@ -13,20 +16,23 @@ namespace TacticalBounce.Components
 
         private List<GameObject> generatedLevelButtons;
 
+        #region UIMenu
         public override void ShowMenu()
         {
             base.ShowMenu();
 
+            ClearLevelButtons();
             GenerateLevelButtons();
         }
-
         public override void HideMenu()
         {
             base.HideMenu();
 
             ClearLevelButtons();
         }
+        #endregion
 
+        #region Class Functions
         private void ClearLevelButtons()
         {
             if (generatedLevelButtons == null)
@@ -57,5 +63,6 @@ namespace TacticalBounce.Components
                 generatedLevelButtons.Add(levelBtn);
             }
         }
+        #endregion
     }
 }
